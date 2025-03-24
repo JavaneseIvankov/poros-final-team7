@@ -1,0 +1,71 @@
+services:
+   db:
+      image: postgres:latest
+      volumes:
+         - db_data:/var/lib/postgresql/data
+      secrets:
+         - db_user
+         - db_password
+         - db_name
+      configs:
+         - source: db_host
+           target: /run/secrets/db_host
+         - source: db_port
+           target: /run/secrets/db_port
+      environment:
+         POSTGRES_USER_FILE: /run/secrets/db_user
+         POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+         POSTGRES_DB_FILE: /run/secrets/db_name
+      healthcheck:
+         test: ['CMD-SHELL', 'pg_isready -U ${DB_USER}']
+         interval: 10s
+         timeout: 5s
+         retries: 5
+
+   app:
+      image: porosteam7/poros-final-team7:latest
+      depends_on:
+         db:
+            condition: service_healthy
+      volumes:
+         - app_data:/app/data
+      secrets:
+         - db_user
+         - db_password
+         - db_name
+      configs:
+         - source: db_host
+           target: /run/secrets/db_host
+         - source: db_port
+           target: /run/secrets/db_port
+      environment:
+         DB_USER_FILE: /run/secrets/db_user
+         DB_PASSWORD_FILE: /run/secrets/db_password
+         DB_NAME_FILE: /run/secrets/db_name
+         DB_HOST_FILE: /run/secrets/db_host
+         DB_PORT_FILE: /run/secrets/db_port
+      healthcheck:
+         test: ['CMD-SHELL', 'curl -f http://localhost:8080/health || exit 1']
+         interval: 30s
+         timeout: 10s
+         retries: 3
+      ports:
+         - '8080:8080'
+
+volumes:
+   db_data:
+   app_data:
+
+secrets:
+   db_user:
+      external: true
+   db_password:
+      external: true
+   db_name:
+      external: true
+
+configs:
+   db_host:
+      external: true
+   db_port:
+      external: true

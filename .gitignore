@@ -69,3 +69,7 @@ junit.xml
 
 # Go build cache
 .cache/
+
+# Docker configs and secrets
+initConfigs.sh
+initSecrets.sh
