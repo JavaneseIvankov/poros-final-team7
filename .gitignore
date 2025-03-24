@@ -1,0 +1,71 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.coverprofile
+
+# Output of the go build tool
+*.a
+*.o
+*.e
+
+# Go workspace file
+go.work
+
+# Dependency directories
+vendor/
+
+# IDE and editor specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+
+# Logs
+*.log
+
+# Environment variables
+.env
+.env.local
+.env.staging
+.env.production
+
+
+# Secrets
+secrets/
+
+# Build directories
+bin/
+build/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.old
+*.orig
+*.rej
+*.sublime-project
+*.sublime-workspace
+
+# Coverage reports
+coverage/
+*.cover
+*.cov
+
+# Test results
+test-results/
+junit.xml
+
+# Go test binary
+*.test
+
+# Go build cache
+.cache/
