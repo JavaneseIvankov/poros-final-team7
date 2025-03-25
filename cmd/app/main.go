@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"os"
 
@@ -39,10 +40,15 @@ func initDB() {
 
 // Helper function to get environment variables with default values
 func getEnv(key, defaultValue string) string {
-	if value, exists := os.LookupEnv(key); exists {
-		return value
-	}
-	return defaultValue
+    if value, exists := os.LookupEnv(key); exists {
+        return value
+    }
+    if filePath, exists := os.LookupEnv(key + "_FILE"); exists {
+        if content, err := ioutil.ReadFile(filePath); err == nil {
+            return string(content)
+        }
+    }
+    return defaultValue
 }
 
 func getProducts(c *gin.Context) {
