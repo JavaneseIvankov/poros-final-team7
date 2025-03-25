@@ -21,12 +21,18 @@ services:
          interval: 10s
          timeout: 5s
          retries: 5
+      deploy:
+         replicas: 1
+         update_config:
+            parallelism: 1
+            delay: 10s
+         restart_policy:
+            condition: on-failure
 
    app:
       image: porosteam7/poros-final-team7:latest
       depends_on:
-         db:
-            condition: service_healthy
+         - db
       volumes:
          - app_data:/app/data
       secrets:
@@ -51,6 +57,13 @@ services:
          retries: 3
       ports:
          - '8080:8080'
+      deploy:
+         replicas: 3
+         update_config:
+            parallelism: 1
+            delay: 10s
+         restart_policy:
+            condition: on-failure
 
 volumes:
    db_data:
